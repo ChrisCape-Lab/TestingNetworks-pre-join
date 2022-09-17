@@ -1,0 +1,130 @@
+
++=========================+
+|  DATA                   |
++=========================+
+
+Dataset: 		AMLDataGen
+Tasker: 		node_cls
+Splitter:		train: 70, val: 39, test: 47
+	gcn.layers.0.weights  torch.Size([25, 10])
+	gcn.layers.1.weights  torch.Size([10, 8])
+	classifier.dense_classifier.0.weights  torch.Size([8, 6])
+	classifier.dense_classifier.0.bias  torch.Size([6])
+	classifier.dense_classifier.1.weights  torch.Size([6, 2])
+	classifier.dense_classifier.1.bias  torch.Size([2])
+Loss: 			cross_entropy
+
+
+
++=========================+
+|  TRAIN                  |
++=========================+
+
+  - Epoch 0/1000 - 0:00:06 :   train loss: 2814.961     valid loss: 103.311     F1: 0.009   | Best: 0.009.  patience: 0/50
+  - Epoch 1/1000 - 0:00:06 :   train loss: 126.979     valid loss: 74.022     F1: 0.011   | Best: 0.011.  patience: 0/50
+  - Epoch 2/1000 - 0:00:06 :   train loss: 93.456     valid loss: 254.358     F1: 0.014   | Best: 0.014.  patience: 0/50
+  - Epoch 3/1000 - 0:00:06 :   train loss: 88.051     valid loss: 194.838     F1: 0.013   | Best: 0.014.  patience: 1/50
+  - Epoch 4/1000 - 0:00:06 :   train loss: 81.263     valid loss: 105.82     F1: 0.013   | Best: 0.014.  patience: 2/50
+  - Epoch 5/1000 - 0:00:06 :   train loss: 69.671     valid loss: 21.188     F1: 0.013   | Best: 0.014.  patience: 3/50
+  - Epoch 6/1000 - 0:00:06 :   train loss: 58.054     valid loss: 18.588     F1: 0.011   | Best: 0.014.  patience: 4/50
+  - Epoch 7/1000 - 0:00:06 :   train loss: 44.815     valid loss: 82.801     F1: 0.013   | Best: 0.014.  patience: 5/50
+  - Epoch 8/1000 - 0:00:06 :   train loss: 53.264     valid loss: 31.081     F1: 0.012   | Best: 0.014.  patience: 6/50
+  - Epoch 9/1000 - 0:00:06 :   train loss: 51.513     valid loss: 28.08     F1: 0.0   | Best: 0.014.  patience: 7/50
+  - Epoch 10/1000 - 0:00:06 :   train loss: 45.87     valid loss: 14.057     F1: 0.003   | Best: 0.014.  patience: 8/50
+  - Epoch 11/1000 - 0:00:06 :   train loss: 54.238     valid loss: 53.005     F1: 0.014   | Best: 0.014.  patience: 0/50
+  - Epoch 12/1000 - 0:00:06 :   train loss: 46.107     valid loss: 62.206     F1: 0.0   | Best: 0.014.  patience: 1/50
+  - Epoch 13/1000 - 0:00:06 :   train loss: 51.622     valid loss: 85.496     F1: 0.013   | Best: 0.014.  patience: 2/50
+  - Epoch 14/1000 - 0:00:06 :   train loss: 39.215     valid loss: 28.141     F1: 0.0   | Best: 0.014.  patience: 3/50
+  - Epoch 15/1000 - 0:00:06 :   train loss: 56.658     valid loss: 4.174     F1: 0.011   | Best: 0.014.  patience: 4/50
+  - Epoch 16/1000 - 0:00:06 :   train loss: 73.311     valid loss: 43.05     F1: 0.014   | Best: 0.014.  patience: 5/50
+  - Epoch 17/1000 - 0:00:06 :   train loss: 59.129     valid loss: 43.602     F1: 0.0   | Best: 0.014.  patience: 6/50
+  - Epoch 18/1000 - 0:00:06 :   train loss: 103.721     valid loss: 89.891     F1: 0.013   | Best: 0.014.  patience: 7/50
+  - Epoch 19/1000 - 0:00:06 :   train loss: 34.949     valid loss: 24.429     F1: 0.014   | Best: 0.014.  patience: 8/50
+  - Epoch 20/1000 - 0:00:06 :   train loss: 44.822     valid loss: 60.461     F1: 0.0   | Best: 0.014.  patience: 9/50
+  - Epoch 21/1000 - 0:00:06 :   train loss: 52.794     valid loss: 43.072     F1: 0.0   | Best: 0.014.  patience: 10/50
+  - Epoch 22/1000 - 0:00:06 :   train loss: 45.462     valid loss: 9.213     F1: 0.004   | Best: 0.014.  patience: 11/50
+  - Epoch 23/1000 - 0:00:06 :   train loss: 38.469     valid loss: 39.129     F1: 0.0   | Best: 0.014.  patience: 12/50
+  - Epoch 24/1000 - 0:00:06 :   train loss: 26.964     valid loss: 28.982     F1: 0.0   | Best: 0.014.  patience: 13/50
+  - Epoch 25/1000 - 0:00:06 :   train loss: 38.048     valid loss: 22.467     F1: 0.0   | Best: 0.014.  patience: 14/50
+  - Epoch 26/1000 - 0:00:06 :   train loss: 42.248     valid loss: 11.285     F1: 0.008   | Best: 0.014.  patience: 15/50
+  - Epoch 27/1000 - 0:00:06 :   train loss: 38.783     valid loss: 34.161     F1: 0.013   | Best: 0.014.  patience: 16/50
+  - Epoch 28/1000 - 0:00:06 :   train loss: 37.556     valid loss: 58.168     F1: 0.0   | Best: 0.014.  patience: 17/50
+  - Epoch 29/1000 - 0:00:06 :   train loss: 48.276     valid loss: 37.079     F1: 0.0   | Best: 0.014.  patience: 18/50
+  - Epoch 30/1000 - 0:00:06 :   train loss: 37.839     valid loss: 61.699     F1: 0.013   | Best: 0.014.  patience: 19/50
+  - Epoch 31/1000 - 0:00:06 :   train loss: 19.366     valid loss: 36.43     F1: 0.013   | Best: 0.014.  patience: 20/50
+  - Epoch 32/1000 - 0:00:06 :   train loss: 35.415     valid loss: 14.499     F1: 0.0   | Best: 0.014.  patience: 21/50
+  - Epoch 33/1000 - 0:00:06 :   train loss: 29.601     valid loss: 28.095     F1: 0.0   | Best: 0.014.  patience: 22/50
+  - Epoch 34/1000 - 0:00:06 :   train loss: 44.984     valid loss: 15.027     F1: 0.013   | Best: 0.014.  patience: 23/50
+  - Epoch 35/1000 - 0:00:06 :   train loss: 43.239     valid loss: 66.438     F1: 0.0   | Best: 0.014.  patience: 24/50
+  - Epoch 36/1000 - 0:00:06 :   train loss: 32.227     valid loss: 47.631     F1: 0.0   | Best: 0.014.  patience: 25/50
+  - Epoch 37/1000 - 0:00:06 :   train loss: 46.308     valid loss: 45.526     F1: 0.0   | Best: 0.014.  patience: 26/50
+  - Epoch 38/1000 - 0:00:06 :   train loss: 21.192     valid loss: 17.49     F1: 0.0   | Best: 0.014.  patience: 27/50
+  - Epoch 39/1000 - 0:00:06 :   train loss: 34.285     valid loss: 40.973     F1: 0.0   | Best: 0.014.  patience: 28/50
+  - Epoch 40/1000 - 0:00:06 :   train loss: 19.967     valid loss: 17.297     F1: 0.013   | Best: 0.014.  patience: 29/50
+  - Epoch 41/1000 - 0:00:06 :   train loss: 27.364     valid loss: 67.111     F1: 0.0   | Best: 0.014.  patience: 30/50
+  - Epoch 42/1000 - 0:00:06 :   train loss: 63.375     valid loss: 8.579     F1: 0.015   | Best: 0.015.  patience: 0/50
+  - Epoch 43/1000 - 0:00:06 :   train loss: 31.075     valid loss: 23.906     F1: 0.0   | Best: 0.015.  patience: 1/50
+  - Epoch 44/1000 - 0:00:06 :   train loss: 45.713     valid loss: 60.408     F1: 0.013   | Best: 0.015.  patience: 2/50
+  - Epoch 45/1000 - 0:00:06 :   train loss: 44.991     valid loss: 26.164     F1: 0.013   | Best: 0.015.  patience: 3/50
+  - Epoch 46/1000 - 0:00:06 :   train loss: 27.94     valid loss: 2.082     F1: 0.025   | Best: 0.025.  patience: 0/50
+  - Epoch 47/1000 - 0:00:06 :   train loss: 31.604     valid loss: 38.162     F1: 0.013   | Best: 0.025.  patience: 1/50
+  - Epoch 48/1000 - 0:00:06 :   train loss: 15.833     valid loss: 53.79     F1: 0.0   | Best: 0.025.  patience: 2/50
+  - Epoch 49/1000 - 0:00:06 :   train loss: 31.108     valid loss: 4.424     F1: 0.007   | Best: 0.025.  patience: 3/50
+  - Epoch 50/1000 - 0:00:06 :   train loss: 28.718     valid loss: 14.16     F1: 0.0   | Best: 0.025.  patience: 4/50
+  - Epoch 51/1000 - 0:00:06 :   train loss: 22.835     valid loss: 32.228     F1: 0.0   | Best: 0.025.  patience: 5/50
+  - Epoch 52/1000 - 0:00:06 :   train loss: 19.336     valid loss: 37.808     F1: 0.013   | Best: 0.025.  patience: 6/50
+  - Epoch 53/1000 - 0:00:06 :   train loss: 15.528     valid loss: 9.48     F1: 0.004   | Best: 0.025.  patience: 7/50
+  - Epoch 54/1000 - 0:00:06 :   train loss: 28.869     valid loss: 48.419     F1: 0.0   | Best: 0.025.  patience: 8/50
+  - Epoch 55/1000 - 0:00:06 :   train loss: 22.544     valid loss: 31.008     F1: 0.0   | Best: 0.025.  patience: 9/50
+  - Epoch 56/1000 - 0:00:06 :   train loss: 11.962     valid loss: 52.127     F1: 0.013   | Best: 0.025.  patience: 10/50
+  - Epoch 57/1000 - 0:00:06 :   train loss: 24.598     valid loss: 4.765     F1: 0.015   | Best: 0.025.  patience: 11/50
+  - Epoch 58/1000 - 0:00:06 :   train loss: 28.084     valid loss: 2.868     F1: 0.021   | Best: 0.025.  patience: 12/50
+  - Epoch 59/1000 - 0:00:06 :   train loss: 42.732     valid loss: 7.618     F1: 0.003   | Best: 0.025.  patience: 13/50
+  - Epoch 60/1000 - 0:00:06 :   train loss: 18.777     valid loss: 17.321     F1: 0.016   | Best: 0.025.  patience: 14/50
+  - Epoch 61/1000 - 0:00:06 :   train loss: 17.711     valid loss: 15.007     F1: 0.0   | Best: 0.025.  patience: 15/50
+  - Epoch 62/1000 - 0:00:06 :   train loss: 33.676     valid loss: 91.515     F1: 0.013   | Best: 0.025.  patience: 16/50
+  - Epoch 63/1000 - 0:00:06 :   train loss: 16.319     valid loss: 9.186     F1: 0.002   | Best: 0.025.  patience: 17/50
+  - Epoch 64/1000 - 0:00:06 :   train loss: 20.015     valid loss: 66.021     F1: 0.013   | Best: 0.025.  patience: 18/50
+  - Epoch 65/1000 - 0:00:06 :   train loss: 15.586     valid loss: 22.302     F1: 0.002   | Best: 0.025.  patience: 19/50
+  - Epoch 66/1000 - 0:00:06 :   train loss: 20.7     valid loss: 64.594     F1: 0.0   | Best: 0.025.  patience: 20/50
+  - Epoch 67/1000 - 0:00:06 :   train loss: 19.305     valid loss: 2.363     F1: 0.024   | Best: 0.025.  patience: 21/50
+  - Epoch 68/1000 - 0:00:06 :   train loss: 19.527     valid loss: 93.383     F1: 0.013   | Best: 0.025.  patience: 22/50
+  - Epoch 69/1000 - 0:00:06 :   train loss: 32.493     valid loss: 8.257     F1: 0.006   | Best: 0.025.  patience: 23/50
+  - Epoch 70/1000 - 0:00:06 :   train loss: 16.862     valid loss: 14.358     F1: 0.003   | Best: 0.025.  patience: 24/50
+  - Epoch 71/1000 - 0:00:06 :   train loss: 21.773     valid loss: 21.683     F1: 0.0   | Best: 0.025.  patience: 25/50
+  - Epoch 72/1000 - 0:00:06 :   train loss: 23.928     valid loss: 15.638     F1: 0.0   | Best: 0.025.  patience: 26/50
+  - Epoch 73/1000 - 0:00:06 :   train loss: 23.097     valid loss: 11.804     F1: 0.013   | Best: 0.025.  patience: 27/50
+  - Epoch 74/1000 - 0:00:06 :   train loss: 24.838     valid loss: 70.676     F1: 0.0   | Best: 0.025.  patience: 28/50
+  - Epoch 75/1000 - 0:00:06 :   train loss: 22.0     valid loss: 34.461     F1: 0.013   | Best: 0.025.  patience: 29/50
+  - Epoch 76/1000 - 0:00:06 :   train loss: 9.195     valid loss: 14.559     F1: 0.013   | Best: 0.025.  patience: 30/50
+  - Epoch 77/1000 - 0:00:06 :   train loss: 27.035     valid loss: 7.256     F1: 0.002   | Best: 0.025.  patience: 31/50
+  - Epoch 78/1000 - 0:00:06 :   train loss: 15.463     valid loss: 9.289     F1: 0.011   | Best: 0.025.  patience: 32/50
+  - Epoch 79/1000 - 0:00:06 :   train loss: 15.5     valid loss: 19.164     F1: 0.0   | Best: 0.025.  patience: 33/50
+  - Epoch 80/1000 - 0:00:06 :   train loss: 18.874     valid loss: 31.151     F1: 0.0   | Best: 0.025.  patience: 34/50
+  - Epoch 81/1000 - 0:00:06 :   train loss: 13.141     valid loss: 10.657     F1: 0.0   | Best: 0.025.  patience: 35/50
+  - Epoch 82/1000 - 0:00:06 :   train loss: 13.069     valid loss: 38.494     F1: 0.0   | Best: 0.025.  patience: 36/50
+  - Epoch 83/1000 - 0:00:06 :   train loss: 19.684     valid loss: 15.942     F1: 0.0   | Best: 0.025.  patience: 37/50
+  - Epoch 84/1000 - 0:00:06 :   train loss: 16.125     valid loss: 4.745     F1: 0.0   | Best: 0.025.  patience: 38/50
+  - Epoch 85/1000 - 0:00:06 :   train loss: 13.164     valid loss: 9.586     F1: 0.0   | Best: 0.025.  patience: 39/50
+  - Epoch 86/1000 - 0:00:06 :   train loss: 10.876     valid loss: 34.463     F1: 0.013   | Best: 0.025.  patience: 40/50
+  - Epoch 87/1000 - 0:00:06 :   train loss: 30.064     valid loss: 27.517     F1: 0.013   | Best: 0.025.  patience: 41/50
+  - Epoch 88/1000 - 0:00:06 :   train loss: 20.661     valid loss: 18.842     F1: 0.0   | Best: 0.025.  patience: 42/50
+  - Epoch 89/1000 - 0:00:06 :   train loss: 10.69     valid loss: 16.006     F1: 0.012   | Best: 0.025.  patience: 43/50
+  - Epoch 90/1000 - 0:00:06 :   train loss: 22.702     valid loss: 31.467     F1: 0.013   | Best: 0.025.  patience: 44/50
+  - Epoch 91/1000 - 0:00:06 :   train loss: 16.01     valid loss: 18.402     F1: 0.013   | Best: 0.025.  patience: 45/50
+  - Epoch 92/1000 - 0:00:06 :   train loss: 11.881     valid loss: 7.593     F1: 0.013   | Best: 0.025.  patience: 46/50
+  - Epoch 93/1000 - 0:00:06 :   train loss: 5.904     valid loss: 33.61     F1: 0.013   | Best: 0.025.  patience: 47/50
+  - Epoch 94/1000 - 0:00:06 :   train loss: 49.928     valid loss: 42.131     F1: 0.0   | Best: 0.025.  patience: 48/50
+  - Epoch 95/1000 - 0:00:06 :   train loss: 28.418     valid loss: 9.632     F1: 0.015   | Best: 0.025.  patience: 49/50
+  - Epoch 96/1000 - 0:00:06 :   train loss: 16.468     valid loss: 2.196     F1: 0.008   | Best: 0.025.  patience: 50/50
+   - Epoch 97/1000: Early stop   | Best: 0.0245417506367509
+
+
+
++=========================+
+|  RESULTS                |
++=========================+
+
+Time: 0:10:06.411179
+Test loss: 1.844706152347808   validation measure: 0.024041318047660236
+('Loss', 1.844706152347808)('Error', 0.17402127659574468)('Accuracy', 0.8259787234042552)('MRR', 0.0)('MAP', 0.008700391848322626)('Precision', 0.012470669383160934)('Recall', 0.3788076592514943)('bACC', 0.6036307333098206)('F1', 0.024041318047660236)('_cf_matrix_str', '387189 80173 1617 1021')
