@@ -1,0 +1,51 @@
+
++=========================+
+|  CONFIGURATION          |
++=========================+
+
+Dataset:            AS_Complete_10K
+Model:              Evolve-h_Classifier
+Task:               node_cls
+Train-validation:   test 46, valid: 26, test: 32
+Loss:               cross_entropy
+
+
+
++=========================+
+|  MODEL                  |
++=========================+
+
+Model: Evolve-h_Classifier
+
+Layer                              Shape     Parameters
+=======================================================
+network
+   ├── layer0 (GCN_init_weights)        [21x10]            210
+       ├── layertopk (scorer)         [21x1]             21
+       ├── layerupdate (W)        [21x21]            441
+       ├── layerupdate (U)        [21x21]            441
+       ├── layerupdate (bias)        [21x10]            210
+       ├── layerreset (W)        [21x21]            441
+       ├── layerreset (U)        [21x21]            441
+       ├── layerreset (bias)        [21x10]            210
+       ├── layerhtilda (W)        [21x21]            441
+       ├── layerhtilda (U)        [21x21]            441
+       ├── layerhtilda (bias)        [21x10]            210
+   ├── layer1 (GCN_init_weights)         [10x8]             80
+       ├── layertopk (scorer)         [10x1]             10
+       ├── layerupdate (W)        [10x10]            100
+       ├── layerupdate (U)        [10x10]            100
+       ├── layerupdate (bias)         [10x8]             80
+       ├── layerreset (W)        [10x10]            100
+       ├── layerreset (U)        [10x10]            100
+       ├── layerreset (bias)         [10x8]             80
+       ├── layerhtilda (W)        [10x10]            100
+       ├── layerhtilda (U)        [10x10]            100
+       └── layerhtilda (bias)         [10x8]             80
+classifier
+   ├── layer0 (weights)            [8x6]             48
+   ├── layer0 (bias)                 [6]              6
+   ├── layer1 (weights)            [6x2]             12
+   └── layer1 (bias)                 [2]              2
+=======================================================
+TOTAL                                              4505

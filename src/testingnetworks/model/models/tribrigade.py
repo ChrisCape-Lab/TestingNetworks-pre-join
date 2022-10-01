@@ -9,7 +9,7 @@ class TriBrigade(torch.nn.Module):
         self.config = DotDict(config)
 
         self.autoencoder = autoencoder
-        self.gcn = gcnclassifier.gcn
+        self.gcn = gcnclassifier.network
         self.classifier = _build_classifier(self.config.classifier_args, data.num_nodes, data.num_classes)
         self.rec_error_fun = rec_error_fun
 
@@ -29,7 +29,7 @@ class TriBrigade(torch.nn.Module):
         reconstruction = self.autoencoder.forward(ae_inputs)
         # Get the reconstruction loss for the autoencoder
         anomaly_score = self.rec_error_fun(reconstruction, ae_inputs)
-        # Get the node embeddings from the classifier
+        # Get the node embeddings from the gnn_classifier
         embeddings = self.gcn.forward(inputs)
         anomaly_score = torch.reshape(anomaly_score, (anomaly_score.shape[0], 1))
         # Combine the reconstruction error and the node embeddings
@@ -72,7 +72,7 @@ def _build_network(network_args, dataset, device):
 
 
 def _build_classifier(classifier_args, num_nodes, num_classes):
-    """Return the correct classifier to build according to the input (a simple if-elif). If not present raise a NotImplementedError"""
+    """Return the correct gnn_classifier to build according to the input (a simple if-elif). If not present raise a NotImplementedError"""
     classifier_args = DotDict(classifier_args)
     if classifier_args.classifier == "Linear":
         from src.testingnetworks.model.decoders.classifiers import LinearClassifier
@@ -84,4 +84,4 @@ def _build_classifier(classifier_args, num_nodes, num_classes):
         from src.testingnetworks.model.decoders.classifiers import GATClassifier
         return GATClassifier(classifier_args, num_classes)
     else:
-        raise NotImplementedError('The chosen classifier has not been implemented yet')
+        raise NotImplementedError('The chosen gnn_classifier has not been implemented yet')

@@ -1,0 +1,10 @@
+
++=========================+
+|  CONFIGURATION          |
++=========================+
+
+Dataset:            AS_bank_mixed
+Model:              Evolve-h_Classifier
+Task:               node_cls
+Train-validation:   test 46, valid: 26, test: 32
+Loss:               cross_entropy

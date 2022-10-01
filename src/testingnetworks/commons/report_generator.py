@@ -144,7 +144,7 @@ class ReportGenerator:
                 for n, p in parameters:
                     results_file.write("\t" + str(n) + "  " + str(p.shape) + "")
 
-    def log_training_data(self, curr_epoch: int, tot_epoch: int, time: str, train_loss: float, valid_loss: float, eval_measure_name: str,
+    def log_training_data(self, curr_epoch: int, tot_epoch: int, time: str, train_loss: float, valid_loss: float or None, eval_measure_name: str,
                           eval_measures: dict, best_eval_measure: float, patience: (int, int) = None, early_stop: bool = False) -> str:
         # Write the data in the .txt file
         if self.is_training_first_log:
@@ -155,7 +155,8 @@ class ReportGenerator:
         if not early_stop:
             step_output = str(' - Epoch ' + str(curr_epoch) + '/' + str(tot_epoch) + ' - ' + time[2:-7] + ' :')
             step_output += '  train loss: ' + str(round(train_loss, 3)).ljust(5, '0')
-            step_output += '    valid loss: ' + str(round(valid_loss, 3)).ljust(5, '0')
+            if valid_loss is not None:
+                step_output += '    valid loss: ' + str(round(valid_loss, 3)).ljust(5, '0')
             step_output += '    ' + str(eval_measure_name) + ': ' + str(round(eval_measures[eval_measure_name], 3)).ljust(5, '0')
             step_output += ' |  Best: ' + str(round(best_eval_measure, 3)).ljust(5, '0')
             step_output += '  patience: ' + str(patience[0]) + '/' + str(patience[1])
@@ -230,6 +231,7 @@ class ReportGenerator:
 
     # SINGLE EXPERIMENT GRAPHS
     # ----------------------------------------------------
+
     def _save_confusion_matrix_graph(self, pdf):
         cf_matrix_df = self.results_df.iloc[-1]
         cf_matrix_values_list = cf_matrix_df['_cf_matrix_str'].split()
@@ -321,9 +323,9 @@ class ReportGenerator:
         plt.clf()
         plt.close('all')
 
-
     # COMPARATIVE GRAPHS
     # ----------------------------------------------------
+
     def _gen_comparative_cf_matrix_data_graph(self):
         return
 
@@ -332,24 +334,3 @@ class ReportGenerator:
 
     def _gen_comparative_table(self):
         return
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

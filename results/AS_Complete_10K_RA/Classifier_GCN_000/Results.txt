@@ -1,0 +1,46 @@
+
++=========================+
+|  CONFIGURATION          |
++=========================+
+
+Dataset:            AS_Complete_10K_RA
+Model:              GCN_Classifier
+Task:               node_cls
+Train-validation:   test 46, valid: 26, test: 32
+Loss:               cross_entropy
+
+
+
++=========================+
+|  MODEL                  |
++=========================+
+
+Model: GCN_Classifier
+
+Layer                              Shape     Parameters
+=======================================================
+network
+   ├── layer0 (weights)          [21x10]            210
+   └── layer1 (weights)           [10x8]             80
+classifier
+   ├── layer0 (weights)            [8x6]             48
+   ├── layer0 (bias)                 [6]              6
+   ├── layer1 (weights)            [6x2]             12
+   └── layer1 (bias)                 [2]              2
+=======================================================
+TOTAL                                               358
+
+
+
++=========================+
+|  TRAIN                  |
++=========================+
+
+ - Epoch 0/1000 - 00:03 :  train loss: 5.512    valid loss: 0.594    F1: 0.907 |  Best: 0.907  patience: 0/50
+ - Epoch 1/1000 - 00:03 :  train loss: 3.014    valid loss: 0.758    F1: 0.933 |  Best: 0.933  patience: 0/50
+ - Epoch 2/1000 - 00:03 :  train loss: 2.561    valid loss: 0.556    F1: 0.929 |  Best: 0.933  patience: 1/50
+ - Epoch 3/1000 - 00:03 :  train loss: 2.155    valid loss: 0.462    F1: 0.935 |  Best: 0.935  patience: 0/50
+ - Epoch 4/1000 - 00:03 :  train loss: 1.928    valid loss: 0.364    F1: 0.935 |  Best: 0.935  patience: 1/50
+ - Epoch 5/1000 - 00:03 :  train loss: 1.770    valid loss: 0.321    F1: 0.932 |  Best: 0.935  patience: 2/50
+ - Epoch 6/1000 - 00:03 :  train loss: 1.620    valid loss: 0.292    F1: 0.932 |  Best: 0.935  patience: 3/50
+ - Epoch 7/1000 - 00:03 :  train loss: 1.355    valid loss: 0.270    F1: 0.928 |  Best: 0.935  patience: 4/50

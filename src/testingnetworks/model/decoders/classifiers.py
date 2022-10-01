@@ -3,15 +3,21 @@ import torch.nn.functional
 from torch.nn.parameter import Parameter
 
 from torch.nn import Linear
+
+from src.testingnetworks._constants import DATA
 from src.testingnetworks.model.layers.basic_layers import Dense
 from src.testingnetworks.model.layers.attention_layers import GraphAttentionLayer
 from src.testingnetworks.utils import DotDict, init_glorot
 
 
 class Classifier(torch.nn.Module):
+
+    INPUTS = [DATA.LABELS]
+
     def __init__(self, config):
         super(Classifier, self).__init__()
         self.config = DotDict(config)
+
         self.output_type = self.config.output_type
         self.out_logits = self.output_type == "Logits"
         self.dim_list = self.config.layers_dim
@@ -22,7 +28,7 @@ class Classifier(torch.nn.Module):
 
 class DenseClassifier(Classifier):
     """
-    The DenseClassifier is just a wrapper for the creation of a n-layer classifier made by dense layers.
+    The DenseClassifier is just a wrapper for the creation of a n-layer gnn_classifier made by dense layers.
 
     # Properties
 
@@ -42,7 +48,7 @@ class DenseClassifier(Classifier):
         elif out_dim == "auto" and self.output_type == "Probabilities":
             out_dim = 1
         else:
-            raise NotImplementedError('The chosen classifier output type has not been implemented yet')
+            raise NotImplementedError('The chosen gnn_classifier output type has not been implemented yet')
         self.dim_list.append(out_dim)
 
         self.act = torch.nn.ReLU()
@@ -69,7 +75,7 @@ class DenseClassifier(Classifier):
 
 class LinearClassifier(Classifier):
     """
-        The LinearClassifier is just a wrapper for the creation of a n-layer classifier made by linear layers.
+        The LinearClassifier is just a wrapper for the creation of a n-layer gnn_classifier made by linear layers.
 
         # Properties
 
@@ -91,7 +97,7 @@ class LinearClassifier(Classifier):
         elif out_dim == "auto" and self.config.output_type == "Probabilities":
             out_dim = num_nodes
         else:
-            raise NotImplementedError('The chosen classifier output type has not been implemented yet')
+            raise NotImplementedError('The chosen gnn_classifier output type has not been implemented yet')
         self.dim_list.append(out_dim)
 
         self.act = torch.nn.ReLU()
@@ -132,7 +138,7 @@ class GATClassifier(Classifier):
         elif out_dim == "auto" and self.config.output_type == "Probabilities":
             out_dim = 1
         else:
-            raise NotImplementedError('The chosen classifier output type has not been implemented yet')
+            raise NotImplementedError('The chosen gnn_classifier output type has not been implemented yet')
         self.dim_list.append(out_dim)
 
         self.act = act

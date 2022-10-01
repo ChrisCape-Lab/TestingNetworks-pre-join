@@ -4,6 +4,25 @@ import torch.nn.functional
 from src.testingnetworks.utils import logsumexp
 
 
+# BUILDER
+# ----------------------------------------------------
+
+def build_loss(loss_type: str):
+    """Return the correct loss according to the input (a simple if-elif). If not present raise a NotImplementedError"""
+    if loss_type == "cross_entropy":
+        return cross_entropy
+    elif loss_type == "bce_loss":
+        return bce_loss
+    elif loss_type == "bce_logits_loss":
+        return bce_logits_loss
+    elif loss_type == "autoencoder_loss":
+        return autoencoder_loss
+    elif loss_type == "community_autoencoder_loss":
+        return community_autoencoder_loss
+    else:
+        raise NotImplementedError('The chosen loss has not been implemented yet')
+
+
 # CLASSIFICATION LOSSES
 # ----------------------------------------------------
 

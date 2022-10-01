@@ -52,11 +52,11 @@ class Splitter:
 
             test_idx = [i for i in range(0, len(test_tasker.labels_list))]
 
-        train = SimpleDataLoader(tasker=tasker, indexes=train_idx, time_window=1)
+        train = SimpleDataLoader(tasker=tasker, indexes=train_idx, time_window=data_loading_params['time_window'])
         self.train = DataLoader(train, shuffle=tasker.data_extractor.is_static,  collate_fn=lambda x: x, num_workers=data_loading_params['num_workers'])
 
-        val = SimpleDataLoader(tasker=tasker, indexes=val_idx, time_window=1)
+        val = SimpleDataLoader(tasker=tasker, indexes=val_idx, time_window=data_loading_params['time_window'])
         self.val = DataLoader(val, shuffle=False,  collate_fn=lambda x: x, num_workers=data_loading_params['num_workers'])
 
-        test = SimpleDataLoader(tasker=test_tasker, indexes=test_idx, time_window=1)
+        test = SimpleDataLoader(tasker=test_tasker, indexes=test_idx, time_window=data_loading_params['time_window'])
         self.test = DataLoader(test, shuffle=False,  collate_fn=lambda x: x, num_workers=data_loading_params['num_workers'])

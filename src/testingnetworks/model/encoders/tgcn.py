@@ -9,20 +9,21 @@ from src.testingnetworks.utils import init_glorot
 
 
 class TGCN(Encoder):
-
+    """The GCN module with a LSTM layer at the end. This module is a sequence of GraphConvolutionalLayer to extract the features that has at the end a LSTM
+    layer to record the history"""
     INPUTS = [DATA.ADJACENCY_MATRIX, DATA.NODE_FEATURES]
 
-    def __init__(self, layers_dims, num_nodes, act=torch.nn.ReLU(), bias=False, device='cpu'):
+    def __init__(self, layers_dimensions: list, num_nodes: int, act=torch.nn.ReLU(), bias: bool = False, device: str = 'cpu'):
         super(TGCN, self).__init__(input_list=TGCN.INPUTS)
 
         self.device = device
 
         self.gcn_layers = torch.nn.ModuleList()
-        for i in range(1, len(layers_dims)):
-            gcn_i = GraphConvolution(input_dim=layers_dims[i - 1], output_dim=layers_dims[i], act=act, bias=bias)
+        for i in range(1, len(layers_dimensions)):
+            gcn_i = GraphConvolution(input_dim=layers_dimensions[i - 1], output_dim=layers_dimensions[i], act=act, bias=bias)
             self.gcn_layers.append(gcn_i.to(self.device))
-        self.rnn = LSTMMirrored(input_dim=layers_dims[-1], output_dim=layers_dims[-1])
-        self.history = init_glorot((num_nodes, layers_dims[-1]))
+        self.rnn = LSTMMirrored(input_dim=layers_dimensions[-1], output_dim=layers_dimensions[-1])
+        self.history = init_glorot((num_nodes, layers_dimensions[-1]))
         self.carousel = 0
 
     def forward(self, sample: dict) -> torch.Tensor:
@@ -33,9 +34,9 @@ class TGCN(Encoder):
             self.history = torch.zeros((node_embs.shape[0], self.history_dim))
 
         for gcn in self.gcn_layers:
-            node_embs = gcn.forward(adj_matrix, node_embs)
+            node_embs = gcn(adj_matrix, node_embs)
 
-        node_embs, carousel = self.rnn.forward(inputs=node_embs, hist=self.history, carousel=self.carousel)
+        node_embs, carousel = self.rnn(node_embs, self.history, self.carousel)
         self.history = node_embs.detach()
         self.carousel = carousel.detach()
 
@@ -43,7 +44,7 @@ class TGCN(Encoder):
 
 
 class TGCNe(Encoder):
-
+    """The TGCNe module. This module is a sequence of GraphConvolutionalLayer that has at the end a GLSTM layer to record history"""
     INPUTS = [DATA.ADJACENCY_MATRIX, DATA.NODE_FEATURES]
 
     def __init__(self, layers_dims, num_nodes, act=torch.nn.ReLU(), bias=False, device='cpu'):
@@ -80,18 +81,18 @@ class TGCNseq(Encoder):
     """
     INPUTS = [DATA.ADJACENCY_MATRIX, DATA.NODE_FEATURES]
 
-    def __init__(self,  layers_dims, act=torch.nn.ReLU(), bias=False, device='cpu'):
+    def __init__(self, layers_dimensions: list, act=torch.nn.ReLU(), bias: bool = False, device: str = 'cpu'):
         super(TGCNseq, self).__init__(input_list=TGCNseq.INPUTS)
 
         self.activation = act
         self.device = device
         self.layers = torch.nn.ModuleList()
 
-        for i in range(1, len(layers_dims)):
-            gcn_i = GraphConvolution(input_dim=layers_dims[i - 1], output_dim=layers_dims[i], act=act, bias=bias)
+        for i in range(1, len(layers_dimensions)):
+            gcn_i = GraphConvolution(input_dim=layers_dimensions[i - 1], output_dim=layers_dimensions[i], act=act, bias=bias)
             self.layers.append(gcn_i.to(self.device))
 
-        self.rnn = torch.nn.LSTM(input_size=layers_dims[-1], hidden_size=layers_dims[-1], num_layers=1)
+        self.rnn = torch.nn.LSTM(input_size=layers_dimensions[-1], hidden_size=layers_dimensions[-1], num_layers=1)
 
     def forward(self, sample: dict) -> torch.Tensor:
         adj_matrix_list = sample[DATA.ADJACENCY_MATRIX]

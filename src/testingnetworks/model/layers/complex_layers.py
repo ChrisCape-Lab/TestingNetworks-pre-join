@@ -12,17 +12,17 @@ class GRCUvH(torch.nn.Module):
     The GRCUvH is the basic Evolve-h layer. This layer takes as input the features list and the A_hat list. At each step,
     it regulates the weights of the GCN layer using the GRUTopK and then apply the normal GCN layer A_hat * H * W
     """
-    def __init__(self, input_dim, output_dim, act=torch.nn.RReLU(), skipfeats=False):
+    def __init__(self, input_dim: int, output_dim: int, act=torch.nn.RReLU(), skipfeats: bool = False):
         super().__init__()
 
-        self.gru_topk = GRUTopK(input_dim, output_dim)
+        self.gru_topk = GRUTopK(input_dim=input_dim, output_dim=output_dim)
         self.skipfeats = skipfeats
 
         self.GCN_init_weights = Parameter(init_glorot([input_dim, output_dim]), requires_grad=True)
 
         self.act = act
 
-    def forward(self, adj_matrix_list, node_embs_list, mask_list):
+    def forward(self, adj_matrix_list: list, node_embs_list: list, mask_list: list) -> list:
         """
         The GRCU-H layer of Evolve, use the node embeddings and the mask to evolve the weights of the GCN, then just
         perform the normal convolution.
@@ -38,7 +38,7 @@ class GRCUvH(torch.nn.Module):
         for t, adj in enumerate(adj_matrix_list):
             node_embs = node_embs_list[t]
             # First, evolve the weights from the initial and use the new weights with the node_embs...
-            gcn_weights = self.gru_topk.forward(node_embs, gcn_weights, mask_list[t])
+            gcn_weights = self.gru_topk(node_embs, gcn_weights, mask_list[t])
             # ...then convolve
             out = self.act(matmul(adj, matmul(node_embs, gcn_weights), sparse=adj.is_sparse))
 
@@ -61,7 +61,7 @@ class GRCUvO(torch.nn.Module):
 
         self.GCN_init_weights = Parameter(init_glorot([input_dim, output_dim]), requires_grad=False)
 
-    def forward(self, adj_matrix_list, node_embs_list):
+    def forward(self, adj_matrix_list: list, node_embs_list: list) -> list:
         """
         The GRCU-H layer of Evolve, use the node embeddings and the mask to evolve the weights of the GCN, then just
         perform the normal convolution.
@@ -76,7 +76,7 @@ class GRCUvO(torch.nn.Module):
         for t, adj in enumerate(adj_matrix_list):
             node_embs = node_embs_list[t]
             # First, evolve the weights from the initial and use the new weights...
-            gcn_weights = self.lstm_topk.forward(gcn_weights)
+            gcn_weights = self.lstm_topk(gcn_weights)
             # ...then convolve
             node_embs = self.act(matmul(adj, matmul(node_embs, gcn_weights), sparse=adj.is_sparse))
 

@@ -106,10 +106,10 @@ class Tasker:
 
         return classes_weights
 
-    def _load_sample(self, start: int, end: int, output_list: list):
+    def _load_sample(self, start: int, end: int, output_list: list, windowed: bool):
         output = dict()
 
-        if start == end - 1:
+        if not windowed:
             output = self._load_single_sample(index=start, output_list=output_list)
         else:
             output = self._load_windowed_sample(start=start, end=end, output_list=output_list)
@@ -117,8 +117,8 @@ class Tasker:
         if DATA.NODE_LABELS in output_list or DATA.EDGE_LABELS in output_list:
             output[DATA.LABELS] = self.labels_list[end - 1]['vals']
 
-        # If there are only nodes or edge labels as labels (simple classifier, not autoencoder or else), output the direct tensor
-        if len(output.keys()) == 1 and list(output.keys())[0] in [DATA.NODE_LABELS, DATA.EDGE_LABELS]:
+        # If there are only nodes or edge labels as labels (simple gnn_classifier, not autoencoder or else), output the direct tensor
+        if len(output.keys()) == 1 and list(output.keys())[0] == DATA.LABELS:
             output = output[list(output.keys())[0]]
 
         return output
@@ -207,40 +207,11 @@ class Tasker:
         start = start if start >= 0 else 0
 
         # Load the input of the model and then add the features in a unique dictionary
-        sample = self._load_sample(start=start, end=end, output_list=self.inputs_list)
-        labels = self._load_sample(start=start, end=end, output_list=self.outputs_list)
-        if isinstance(labels, dict):
-            sample = {**sample, **labels}
-        else:
-            sample[DATA.LABELS] = labels
+        sample = self._load_sample(start=start, end=end, output_list=self.inputs_list, windowed=time_window > 1)
+        labels = self._load_sample(start=start, end=end, output_list=self.outputs_list, windowed=time_window > 1)
+        sample[DATA.LABELS] = labels
 
         return sample
-
-
-class AutoencoderTasker(Tasker):
-    """
-    The Tasker is an abstract class that basically prepare the dataset in order to be used for a particular task. This
-    abstract contains the main attributes and methods that a tasker must have.
-
-    # Properties
-        datasets_output: dataset.Dataset, is the Dataset class associated to the tasker dataset
-        num_classes: int, is the classification task's number of classes (get from the dataset)
-
-    # Methods
-        get_sample(index): return the item(s) of the dataset associated to the time index passed, formatted accordingly
-                            to the task and the window
-    """
-
-    def __init__(self, dataset, task='node_cls', normalize_adj=False, load_conn_matrix=False, load_mod_matrix=False):
-        super().__init__(dataset, task, normalize_adj, load_conn_matrix, load_mod_matrix)
-
-        return
-
-    def _get_labels(self, index, sp_adj, node_feats, mod_matr=None):
-        if mod_matr is None:
-            return [sp_adj, node_feats.detach(), self.labels[index]['vals']]
-        else:
-            return [sp_adj, node_feats.detach(), mod_matr, self.labels[index]['vals']]
 
 
 def _get_modularity_matrix(sp_adj_list, index, num_nodes):

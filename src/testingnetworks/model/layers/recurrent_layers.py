@@ -25,10 +25,10 @@ class GRU(torch.nn.Module):
         :param inputs: the couple (input, memory) for the GRU unit
         :return: the activation of the combination of the inputs
         """
-        update = self.update.forward(x=inputs, h=hist)
-        reset = self.update.forward(x=inputs, h=hist)
+        update = self.update.forward(node_embs=inputs, h=hist)
+        reset = self.update.forward(node_embs=inputs, h=hist)
 
-        h_cap = self.htilda.forward(x=inputs, h=reset * hist)
+        h_cap = self.htilda.forward(node_embs=inputs, h=reset * hist)
 
         return (self.one - update) * hist + update * h_cap
 
@@ -48,10 +48,10 @@ class LSTM(torch.nn.Module):
         self.cell = Gate(input_dim, output_dim, torch.nn.Tanh())
 
     def forward(self, inputs, hist, carousel):
-        forget = self.forget.forward(x=inputs, h=hist)
-        input = self.input.forward(x=inputs, h=hist)
-        output = self.output.forward(x=inputs, h=hist)
-        cell = self.cell.forward(x=inputs, h=hist)
+        forget = self.forget.forward(node_embs=inputs, h=hist)
+        input = self.input.forward(node_embs=inputs, h=hist)
+        output = self.output.forward(node_embs=inputs, h=hist)
+        cell = self.cell.forward(node_embs=inputs, h=hist)
 
         c = forget * carousel + input * cell
         h = output * c
@@ -92,21 +92,21 @@ class LSTMMirrored(torch.nn.Module):
     """
     The basic LSTM class
     """
-    def __init__(self, input_dim, output_dim, act=torch.nn.Sigmoid()):
+    def __init__(self, input_dim: int, output_dim: int, act=torch.nn.Sigmoid()):
         super(LSTMMirrored, self).__init__()
 
         self.act = act
 
-        self.forget = GateMirrored(input_dim, output_dim, act)
-        self.input = GateMirrored(input_dim, output_dim, act)
-        self.output = GateMirrored(input_dim, output_dim, act)
-        self.cell = GateMirrored(input_dim, output_dim, torch.nn.Tanh())
+        self.forget = GateMirrored(input_dim=input_dim, output_dim=output_dim, act=act)
+        self.input = GateMirrored(input_dim=input_dim, output_dim=output_dim, act=act)
+        self.output = GateMirrored(input_dim=input_dim, output_dim=output_dim, act=act)
+        self.cell = GateMirrored(input_dim=input_dim, output_dim=output_dim, act=torch.nn.Tanh())
 
-    def forward(self, inputs, hist, carousel):
-        forget = self.forget.forward(x=inputs, h=hist)
-        input = self.input.forward(x=inputs, h=hist)
-        output = self.output.forward(x=inputs, h=hist)
-        cell = self.cell.forward(x=inputs, h=hist)
+    def forward(self, inputs: torch.Tensor, hist: torch.Tensor, carousel: int) -> (torch.Tensor, int):
+        forget = self.forget(x=inputs, h=hist)
+        input = self.input(x=inputs, h=hist)
+        output = self.output(x=inputs, h=hist)
+        cell = self.cell(x=inputs, h=hist)
 
         c = forget * carousel + input * cell
         h = output * c
@@ -174,7 +174,7 @@ class GRUTopK(torch.nn.Module):
     difference of the addition of the TopK layer: this layer bias the previous history according to the best k nodes
     before applying the normal GRU unit.
     """
-    def __init__(self, input_dim, output_dim, act=torch.nn.Sigmoid()):
+    def __init__(self, input_dim: int, output_dim: int, act=torch.nn.Sigmoid()):
         super(GRUTopK, self).__init__()
 
         self.act = act
@@ -186,24 +186,24 @@ class GRUTopK(torch.nn.Module):
         self.htilda = Gate(input_dim, output_dim, torch.nn.Tanh())
         self.one = init_ones(shape=[input_dim, output_dim])
 
-    def forward(self, inputs, hist, mask):
+    def forward(self, node_embs: torch.Tensor, history: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         """
         This layer requires two different inputs, the network input and the previous layer output. Then. it calculates
         the gates value and combine the input with the previous output (memory)
-        :param inputs: tensor (RxI), the input matrix of the layer
-        :param hist: tensor (IxO), the previous state of the network
-        :param mask: tensor (Rx1), the mask
-        :return: the activation of the combination of the inputs
+        :param node_embs: Tensor (RxI), the input matrix of the layer
+        :param history: Tensor (IxO), the previous state of the network
+        :param mask: Tensor (Rx1), the mask
+        :return: Tensor (IxO), the activation of the combination of the inputs
         """
         # Topk: RxI -> IxO
-        x_topk = self.topk.forward(inputs, mask)
+        x_topk = self.topk(node_embs, mask)
 
-        update = self.update.forward(x=x_topk, h=hist)
-        reset = self.reset.forward(x=x_topk, h=hist)
+        update = self.update(x_topk, history)
+        reset = self.reset(x_topk, history)
 
-        h_cap = self.htilda.forward(x=x_topk, h=reset * hist)
+        h_cap = self.htilda(x_topk, reset * history)
 
-        return (self.one - update) * hist + update * h_cap
+        return (self.one - update) * history + update * h_cap
 
 
 class LSTMTopK(torch.nn.Module):
@@ -212,7 +212,7 @@ class LSTMTopK(torch.nn.Module):
     difference of the addition of the TopK layer: this layer bias the previous history according to the best k nodes
     before applying the normal GRU unit.
     """
-    def __init__(self, input_dim, output_dim, act=torch.nn.Sigmoid()):
+    def __init__(self, input_dim: int, output_dim: int, act=torch.nn.Sigmoid()):
         super(LSTMTopK, self).__init__()
 
         self.act = act
@@ -222,18 +222,18 @@ class LSTMTopK(torch.nn.Module):
         self.htilda = Gate(input_dim, output_dim, torch.nn.Tanh())
         self.one = init_ones(shape=[input_dim, output_dim])
 
-    def forward(self, inputs):
+    def forward(self, history: torch.Tensor) -> torch.Tensor:
         """
         This layer requires two different inputs, the network input and the previous layer output. Then. it calculates
         the gates value and combine the input with the previous output (memory)
-        :param inputs: tensor (RxI), the input matrix of the layer
-        :return: the activation of the combination of the inputs
+        :param history: Tensor (RxI), the input matrix of the layer
+        :return: Tensor(IxO), the activation of the combination of the inputs
         """
-        x_topk = inputs
+        x_topk = history
 
-        update = self.update.forward(x=x_topk, h=inputs)
-        reset = self.reset.forward(x=x_topk, h=inputs)
+        update = self.update(node_embs=x_topk, h=history)
+        reset = self.reset(node_embs=x_topk, h=history)
 
-        h_cap = self.htilda.forward(x=x_topk, h=reset * inputs)
+        h_cap = self.htilda(node_embs=x_topk, h=reset * history)
 
-        return (self.one - update) * inputs + update * h_cap
+        return (self.one - update) * history + update * h_cap

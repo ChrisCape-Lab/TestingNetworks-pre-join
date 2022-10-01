@@ -7,16 +7,18 @@ from src.testingnetworks.model.layers.basic_layers import Dense
 
 
 class DenseNetwork(Encoder):
-
+    """
+    The simple DenseNet module. This module is basically a convolution between features and weights, without taking into account the adjacency matrix.
+    """
     INPUTS = [DATA.NODE_FEATURES]
 
-    def __init__(self, layers_dims, act=torch.nn.ReLU(), bias=False, device='cpu'):
+    def __init__(self, layers_dimensions: list, act=torch.nn.ReLU(), bias: bool = False, device: str = 'cpu'):
         super(DenseNetwork, self).__init__(input_list=DenseNetwork.INPUTS)
 
         self.layers = torch.nn.ModuleList()
 
-        for i in range(1, len(layers_dims)):
-            gcn_i = Dense(input_dim=layers_dims[i - 1], output_dim=layers_dims[i], act=act, bias=bias)
+        for i in range(1, len(layers_dimensions)):
+            gcn_i = Dense(input_dim=layers_dimensions[i - 1], output_dim=layers_dimensions[i], act=act, bias=bias)
             self.layers.append(gcn_i.to(device))
 
     def forward(self, sample: dict) -> torch.Tensor:

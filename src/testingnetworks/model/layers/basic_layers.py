@@ -42,22 +42,22 @@ class TopK(torch.nn.Module):
     layer extract the best k rows from the N initials, weight them according to some weights and return them transposed.
     This layer is used in GCRU to take node embs in the form RxI and produce a RxO (k = O) to fit them in the weights update.
     """
-    def __init__(self, features, k):
+    def __init__(self, features_num: int, k: int):
         super().__init__()
 
-        self.scorer = Parameter(init_glorot([features, 1]), requires_grad=True)
+        self.scorer = Parameter(init_glorot([features_num, 1]), requires_grad=True)
         self.k = k
 
-    def forward(self, inputs, mask):
+    def forward(self, node_embs: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         """
 
-        :param inputs: tensor, is the tensor containing the embedding of the elements
-        :param mask:
-        :return:
+        :param node_embs: Tensor (NxF), is the tensor containing the embedding of the elements
+        :param mask: Tensor (Nx1), is the mask of the active nodes
+        :return: Tensor (FxK)
         """
         # Generate a score for nodes depending on some parameters
-        scores = matmul(inputs, self.scorer, inputs.is_sparse) / self.scorer.norm()
-        scores = torch.add(scores, mask.view(-1, 1))
+        scores = matmul(node_embs, self.scorer, node_embs.is_sparse) / self.scorer.norm()
+        scores = torch.add(scores, mask.view(-1, 1))  # view(-1,1) simply add the other dimension to match the scores
 
         # Extract the top k nodes and their indices
         vals, topk_indices = scores.view(-1).topk(self.k)
@@ -68,11 +68,11 @@ class TopK(torch.nn.Module):
 
         tanh = torch.nn.Tanh()
 
-        if inputs.is_sparse:
-            inputs = inputs.to_dense()
+        if node_embs.is_sparse:
+            node_embs = node_embs.to_dense()
 
         # Multiply the topk node features for the tanh
-        out = inputs[topk_indices] * tanh(scores[topk_indices].view(-1, 1))
+        out = node_embs[topk_indices] * tanh(scores[topk_indices].view(-1, 1))
 
         # we need to transpose the output
         return out.t()
@@ -80,10 +80,10 @@ class TopK(torch.nn.Module):
 
 class Gate(torch.nn.Module):
     """
-    A versatile definition of a GRU gate. It include the normal formula and the activation and can constitute different
+    A versatile definition of a GRU gate. It includes the normal formula and the activation and can constitute different
     types of gates depending on parameters.
     """
-    def __init__(self, input_dim, output_dim, act):
+    def __init__(self, input_dim: int, output_dim: int, act):
         super().__init__()
         self.act = act
 
@@ -91,9 +91,9 @@ class Gate(torch.nn.Module):
         self.U = Parameter(init_glorot([input_dim, input_dim]), requires_grad=True)
         self.bias = Parameter(init_glorot([input_dim, output_dim]), requires_grad=True)
 
-    def forward(self, x, h):
+    def forward(self, node_embs: torch.Tensor, h: torch.Tensor) -> torch.Tensor:
         # out = W * x + U * h + b
-        return self.act(self.W.matmul(x) + self.U.matmul(h) + self.bias)
+        return self.act(self.W.matmul(node_embs) + self.U.matmul(h) + self.bias)
 
 
 class GateMirrored(torch.nn.Module):

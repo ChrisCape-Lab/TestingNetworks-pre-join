@@ -1,0 +1,31 @@
+
++=========================+
+|  CONFIGURATION          |
++=========================+
+
+Dataset:            AS_bank_mixed
+Model:              GCN_GraphAutoEncoder
+Task:               node_cls
+Train-validation:   test 46, valid: 26, test: 32
+Loss:               standard
+
+
+
++=========================+
+|  MODEL                  |
++=========================+
+
+Model: GCN_GraphAutoEncoder
+
+Layer                              Shape     Parameters
+=======================================================
+encoder
+   ├── layer0 (weights)          [21x10]            210
+   └── layer1 (weights)           [10x8]             80
+attr_decoder
+ ├── layergcn1 (weights)          [8x10]             80
+ └── layergcn2 (weights)         [10x21]            210
+struct_decoder
+ └── layergcn1 (weights)          [8x10]             80
+=======================================================
+TOTAL                                               660

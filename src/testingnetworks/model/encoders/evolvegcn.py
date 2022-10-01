@@ -10,7 +10,7 @@ class EvolveGCNvH(Encoder):
 
     INPUTS = [DATA.ADJACENCY_MATRIX, DATA.NODE_FEATURES, DATA.NODE_MASK]
 
-    def __init__(self, layers_dims, act=torch.nn.RReLU, skipfeats=False, device='cpu'):
+    def __init__(self, layers_dims: list, act=torch.nn.RReLU, skipfeats: bool = False, device: str = 'cpu'):
         super(EvolveGCNvH, self).__init__(input_list=EvolveGCNvH.INPUTS)
 
         self.act = act
@@ -19,8 +19,8 @@ class EvolveGCNvH(Encoder):
 
         self.GRCU_layers = torch.nn.ModuleList()
 
-        num_layers = len(layers_dims)
-        for i in range(1, num_layers):
+        num_layers = len(layers_dims)-1
+        for i in range(1, num_layers+1):
             grcu_i = GRCUvH(layers_dims[i - 1], layers_dims[i], act=act if i != num_layers else lambda x: x)
             self.GRCU_layers.append(grcu_i.to(self.device))
 
@@ -49,7 +49,7 @@ class EvolveGCNvO(Encoder):
 
     INPUTS = [DATA.ADJACENCY_MATRIX, DATA.NODE_FEATURES]
 
-    def __init__(self, layers_dims, act=torch.nn.RReLU, skipfeats=False, device='cpu'):
+    def __init__(self, layers_dims: list, act=torch.nn.RReLU, skipfeats: bool = False, device: str = 'cpu'):
         super(EvolveGCNvO, self).__init__(input_list=EvolveGCNvO.INPUTS)
 
         self.act = act

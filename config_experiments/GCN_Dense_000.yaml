@@ -7,7 +7,7 @@ setup_parameters:
 
 
 # The type of the Model. Available: 'Classifier', 'AutoEncoder'
-model: Classifier
+model: GCNClassifier
 
 
 #
@@ -22,9 +22,6 @@ dataloading_parameters:
     # Specify if there is a temporal dependency among the datasets_output (basically, if shuffle or not the datasets_output)
     is_static: True
 
-    # Specify the dimension of the sample, which is the amount of time instant datasets_output that are passed each time to the network
-    time_window: 1
-
     # Specify if the adjacency matrix needs to be normalized for spectral convolution
     normalize_adjacency: True
 
@@ -35,7 +32,7 @@ dataloading_parameters:
     directed: False
 
     # specify if the nodes features need to be normalized
-    normalize_features: True
+    normalize_features: False
 
     # specify if illicit transactions are excluded
     lawful: False
@@ -54,12 +51,12 @@ model_args:
 
     # The arguments for the configuration of the 'Network'
     network_args:
-        # The type of the network that extract the features. Available: 'GCN, 'tGCN-1', 'tGCN-2', 'Evolve-h', 'EvolveD-h', 'Evolve-o', 'addGraph',
+        # The type of the network that extract the features. Available: 'DenseNet', 'GCN', 'tGCN-1', 'tGCN-2', 'Evolve-h', 'EvolveD-h', 'Evolve-o', 'addGraph',
         # 'GAT', ...
         network: GCN
 
         # The number of features that the network takes as input. If set to 'auto' is automatically calculated according to the network
-        feats_per_node: auto
+        node_feats_num: auto
 
         # The output dimensions of all hidden layers of the network, if it's a layered network
         layers_dim: [10]
@@ -80,19 +77,19 @@ model_args:
 
     # The arguments for the configuration of the 'Classifier'
     classifier_args:
-        # The type of the classifier. Available: 'Linear', 'Dense', 'EdgeClassifier', 'GAT', ...
+        # The type of the gnn_classifier. Available: 'Linear', 'Dense', 'EdgeClassifier', 'GAT', ...
         classifier: Dense
 
-        # The type of output of the classifier, can be logits (NxC) or probabilities (Nx1). Available: 'Logits' or 'Probabilities'
+        # The type of output of the gnn_classifier, can be logits (NxC) or probabilities (Nx1). Available: 'Logits' or 'Probabilities'
         output_type: Logits
 
-        # The input features of the classifier.
+        # The input features of the gnn_classifier.
         input_feats: 8
 
-        # The output dimensions of all hidden layers of the classifier, if it's a layered classifier
+        # The output dimensions of all hidden layers of the gnn_classifier, if it's a layered gnn_classifier
         layers_dim: [6]
 
-        # The output dimension of the classifier. If is set to 'auto' it is automatically computed by the program
+        # The output dimension of the gnn_classifier. If is set to 'auto' it is automatically computed by the program
         output_dim: auto
 
         # [DENSE] Specify the usage of the bias or not in the Dense Classifier
@@ -106,6 +103,9 @@ training_parameters:
         # Specify the division among the train set, validation set and test set. In autoencoder, put last value to 0
         split_proportions: [ 0.45, 0.25, 0.3 ]
 
+        # Specify the dimension of the sample, which is the amount of time instant datasets_output that are passed each time to the network
+        time_window: 1
+
         # Specify whether to shuffle the training dataset if the dataset is static (otherwise never shuffle)
         shuffle: False
 
@@ -115,7 +115,7 @@ training_parameters:
         # Num workers for loading data. Leave it unchanged if working without CUDA (Default: 0)
         num_workers: 0
 
-    # The different learning rates of the network and classifier
+    # The different learning rates of the network and gnn_classifier
     optimizer_parameters:
         # The learning rate of the network's optimizer
         network_lr: 0.001
@@ -123,7 +123,7 @@ training_parameters:
         # The weight decay of the network's optimizer
         network_wd: 0.01
 
-        # The learning rate of the classifier's optimizer
+        # The learning rate of the gnn_classifier's optimizer
         classifier_lr: 0.001
 
         # The weight decay of the network's optimizer

@@ -1,0 +1,51 @@
+
++=========================+
+|  CONFIGURATION          |
++=========================+
+
+Dataset:            AS_Complete_10K
+Model:              TGCNe_Classifier
+Task:               node_cls
+Train-validation:   test 46, valid: 26, test: 32
+Loss:               cross_entropy
+
+
+
++=========================+
+|  MODEL                  |
++=========================+
+
+Model: TGCNe_Classifier
+
+Layer                              Shape     Parameters
+=======================================================
+network
+   ├── layer0 (weights)          [21x10]            210
+   ├── layer1 (weights)           [10x8]             80
+   ├── layerforget (in_node_w)            [1]              1
+   ├── layerforget (in_feat_w)          [1x8]              8
+   ├── layerforget (hist_node_w)            [1]              1
+   ├── layerforget (hist_feats_w)          [1x8]              8
+   ├── layerforget (bias)          [1x8]              8
+   ├── layerinput (in_node_w)            [1]              1
+   ├── layerinput (in_feat_w)          [1x8]              8
+   ├── layerinput (hist_node_w)            [1]              1
+   ├── layerinput (hist_feats_w)          [1x8]              8
+   ├── layerinput (bias)           [1x8]              8
+   ├── layeroutput (in_node_w)            [1]              1
+   ├── layeroutput (in_feat_w)          [1x8]              8
+   ├── layeroutput (hist_node_w)            [1]              1
+   ├── layeroutput (hist_feats_w)          [1x8]              8
+   ├── layeroutput (bias)          [1x8]              8
+   ├── layercell (in_node_w)            [1]              1
+   ├── layercell (in_feat_w)          [1x8]              8
+   ├── layercell (hist_node_w)            [1]              1
+   ├── layercell (hist_feats_w)          [1x8]              8
+   └── layercell (bias)            [1x8]              8
+classifier
+   ├── layer0 (weights)            [8x6]             48
+   ├── layer0 (bias)                 [6]              6
+   ├── layer1 (weights)            [6x2]             12
+   └── layer1 (bias)                 [2]              2
+=======================================================
+TOTAL                                               462

@@ -60,13 +60,13 @@ def _build_model(model_config, dataset, device):
     config = DotDict(model_config)
 
     if config.model == "GCNClassifier":
-        from src.testingnetworks.model.models.gcnclassifier import GCNClassifier
-        return GCNClassifier(config=config, data=dataset, device=device)
+        from src.testingnetworks.frameworks.gnn_classifier.gcnclassifier import GCNClassifier
+        return GCNClassifier(model_config=config, data=dataset, device=device)
     elif config.model == "GAE":
-        from src.testingnetworks.model.models.autoencoder import GraphAutoEncoder
+        from src.testingnetworks.frameworks.gae.autoencoder import GraphAutoEncoder
         return GraphAutoEncoder(config=config, data=dataset, device=device)
     elif config.model == "CommunityGAE":
-        from src.testingnetworks.model.models.autoencoder import CommunityGraphAutoEncoder
+        from src.testingnetworks.frameworks.gae.autoencoder import CommunityGraphAutoEncoder
         return CommunityGraphAutoEncoder(config=config, data=dataset, device=device)
     else:
         raise NotImplementedError('The chosen model has not been implemented yet')
@@ -186,7 +186,7 @@ class Session:
         """
         report_gen.log_network_data(
             "Model: \t\t\t" + str(self.args.model_args["network_args"]["network"]) + " "
-            + str(self.args.model_args['classifier_args']['classifier']) + "\n")
+            + str(self.args.model_args['classifier_args']['gnn_classifier']) + "\n")
         """
         for n, p in model.named_parameters():
             report_gen.load_results_string("\t" + str(n) + "  " + str(p.shape) + "")

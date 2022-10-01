@@ -1,4 +1,5 @@
 import os
+import yaml
 
 from session import Session, MultiSession
 
@@ -6,7 +7,6 @@ SINGLE = 0
 SPECIAL = 1
 SERIES = 2
 BENCHMARK = 3
-
 
 if __name__ == '__main__':
     """
@@ -74,15 +74,40 @@ if __name__ == '__main__':
 
     # iterate over files in that directory
     for experiment_config_file in os.listdir(experiments_config_directory):
-        experiment = os.path.join(experiments_config_directory, experiment_config_file)
-        if experiment == '../../config_experiments/_gcn_classifier_example.yaml' or experiment == '../../config_experiments/_autoencoder_example.yaml':
+        if experiment_config_file == '_gcn_classifier_example.yaml' or experiment_config_file == '_autoencoder_example.yaml':
             continue
+
+        experiment = os.path.join(experiments_config_directory, experiment_config_file)
+
         for dataset_folder in os.listdir(datasets_directory):
+            if dataset_folder == '_exclude':
+                continue
+
             dataset_folder_path = os.path.join(datasets_directory, dataset_folder)
 
             # Run the simulation
             if os.path.isfile(experiment) and os.path.isdir(dataset_folder_path):
-                from src.testingnetworks.frameworks.classifier.session import ClassifierSession
-                session = ClassifierSession(experiment_config_file_path=str(experiment), dataset_folder_path=str(dataset_folder_path),
-                                            results_folder_path='../../results')
+                # Load network config
+                with open(str(experiment), "r") as stream:
+                    try:
+                        experiment_config = yaml.safe_load(stream)
+                    except yaml.YAMLError as exc:
+                        print(exc)
+                        exit()
+
+                # Return the correct session
+                if experiment_config['model'] == 'GCNClassifier':
+                    from src.testingnetworks.frameworks.gnn_classifier.session import GCNClassifierSession
+
+                    session = GCNClassifierSession(experiment_config_file_path=str(experiment), dataset_folder_path=str(dataset_folder_path),
+                                                   results_folder_path='../../results')
+                elif experiment_config['model'] == 'GraphAutoEncoder':
+                    from src.testingnetworks.frameworks.gae.session import GraphAutoEncoderSession
+
+                    session = GraphAutoEncoderSession(experiment_config_file_path=str(experiment), dataset_folder_path=str(dataset_folder_path),
+                                                      results_folder_path='../../results')
+                else:
+                    raise NotImplementedError
+
                 session.run()
+                del session

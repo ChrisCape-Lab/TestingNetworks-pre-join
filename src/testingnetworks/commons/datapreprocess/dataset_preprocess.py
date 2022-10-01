@@ -28,8 +28,9 @@ def preprocess_dataset(dataset_folder_path: str, dataset_full_name: str, dataset
         if dataset_type == DATASET_TYPES.AMLDATAGEN:
             pass
         elif dataset_type == DATASET_TYPES.AMLSIM:
-            from src.testingnetworks.commons.datapreprocess.amlsim_preprocess import preprocess_amlsim_with_timestamp
-            account_processed_df, transactions_processed_df = preprocess_amlsim_with_timestamp(acc_df=account_raw_df, tx_df=transactions_raw_df)
+            from src.testingnetworks.commons.datapreprocess.preprocess_amlsim import AMLSimPreprocess
+            amls_preprocessor = AMLSimPreprocess(account_df=account_raw_df, transactions_df=transactions_raw_df)
+            account_processed_df, transactions_processed_df = amls_preprocessor.preprocess_dataset()
         else:
             raise NotImplementedError
 

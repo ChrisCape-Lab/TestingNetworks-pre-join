@@ -159,7 +159,7 @@ model_args:
 
 # the arguments for the training phase
 trainer_args:
-    # The different learning rates of the network and classifier
+    # The different learning rates of the network and gnn_classifier
     optimizer_args:
         # The learning rate of the network's optimizer
         model_lr: 0.01

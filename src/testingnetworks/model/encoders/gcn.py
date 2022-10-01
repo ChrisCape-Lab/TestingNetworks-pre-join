@@ -7,17 +7,17 @@ from src.testingnetworks.model.layers.conv_layers import GraphConvolution
 
 
 class GCN(Encoder):
-    """GCN is a simple sequence of GraphConvolution layers, one after another"""
+    """The GCN module. GCN is a simple sequence of GraphConvolution layers, one after another"""
     INPUTS = [DATA.ADJACENCY_MATRIX, DATA.NODE_FEATURES]
 
-    def __init__(self, layers_dims: list, act=torch.nn.ReLU(), bias=False, device='cpu'):
+    def __init__(self, layers_dimensions: list, act=torch.nn.ReLU(), bias: bool = False, device: str = 'cpu'):
         super(GCN, self).__init__(input_list=GCN.INPUTS)
 
         self.layers = torch.nn.ModuleList()
         self.device = device
 
-        for i in range(1, len(layers_dims)):
-            gcn_i = GraphConvolution(input_dim=layers_dims[i - 1], output_dim=layers_dims[i], act=act, bias=bias)
+        for i in range(1, len(layers_dimensions)):
+            gcn_i = GraphConvolution(input_dim=layers_dimensions[i - 1], output_dim=layers_dimensions[i], act=act, bias=bias)
             self.layers.append(gcn_i.to(self.device))
 
     def forward(self, sample: dict) -> torch.Tensor:

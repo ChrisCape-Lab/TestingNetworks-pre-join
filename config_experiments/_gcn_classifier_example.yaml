@@ -105,19 +105,19 @@ model_args:
 
     # The arguments for the configuration of the 'Classifier'
     classifier_args:
-        # The type of the classifier. Available: 'Linear', 'Dense', 'EdgeClassifier', 'GAT', ...
+        # The type of the gnn_classifier. Available: 'Linear', 'Dense', 'EdgeClassifier', 'GAT', ...
         classifier: Dense
 
-        # The type of output of the classifier, can be logits (NxC) or probabilities (Nx1). Available: 'Logits' or 'Probabilities'
+        # The type of output of the gnn_classifier, can be logits (NxC) or probabilities (Nx1). Available: 'Logits' or 'Probabilities'
         output_type: Logits
 
-        # The input features of the classifier.
+        # The input features of the gnn_classifier.
         input_feats: 8
 
-        # The output dimensions of all hidden layers of the classifier, if it's a layered classifier
+        # The output dimensions of all hidden layers of the gnn_classifier, if it's a layered gnn_classifier
         layers_dim: [6]
 
-        # The output dimension of the classifier. If is set to 'auto' it is automatically computed by the program
+        # The output dimension of the gnn_classifier. If is set to 'auto' it is automatically computed by the program
         output_dim: auto
 
         # [DENSE] Specify the usage of the bias or not in the Dense Classifier
@@ -126,7 +126,7 @@ model_args:
 
 # the arguments for the training phase
 trainer_args:
-    # The different learning rates of the network and classifier
+    # The different learning rates of the network and gnn_classifier
     optimizer_args:
         # The learning rate of the network's optimizer
         network_lr: 0.01
@@ -134,7 +134,7 @@ trainer_args:
         # The weight decay of the network's optimizer
         network_wd: 0.01
 
-        # The learning rate of the classifier's optimizer
+        # The learning rate of the gnn_classifier's optimizer
         classifier_lr: 0.01
 
         # The weight decay of the network's optimizer
